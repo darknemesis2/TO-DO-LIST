@@ -9,7 +9,8 @@ function addTodo() {
     // Create a new todo object
     const todo = {
         task: task,
-        completed: false
+        completed: false,
+        createdAt: new Date()
     };
 
     // Get existing todos from localStorage
@@ -101,6 +102,74 @@ function display() {
         // Hide initially
         editInput.style.display = "none";
 
+        /* Timestamp */
+        const createdDate = new Date(todo.createdAt);
+
+        const date = createdDate.getDate();
+
+        const days = [
+            "Sunday",
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday"
+        ];
+
+        const currDay = days[createdDate.getDay()];
+
+        const months = [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December"
+        ];
+
+        const currMonth = months[createdDate.getMonth()];
+
+        const year = createdDate.getFullYear();
+
+        let hour = createdDate.getHours();
+        let minute = createdDate.getMinutes();
+
+        let ampm;
+
+        if (hour >= 12) {
+            ampm = "PM";
+        } else {
+            ampm = "AM";
+        }
+
+        if (hour > 12) {
+            hour = hour - 12;
+        }
+
+        if (hour === 0) {
+            hour = 12;
+        }
+
+        if (minute < 10) {
+            minute = "0" + minute;
+        }
+
+        const time = `${hour}:${minute} ${ampm}`;
+
+        const formattedDate = `• ${date} ${currMonth} ${year} • ${currDay} • ${time}`;
+
+        const timestamp = document.createElement("small");
+        timestamp.innerText = formattedDate;
+
+        timestamp.classList.add("timestamp");
+
 
         /* Checkbox event */
         checkbox.addEventListener("change", function() {
@@ -174,6 +243,9 @@ function display() {
         li.appendChild(editBtn);
         li.appendChild(updateBtn);
         li.appendChild(dltbtn);
+
+        // Add timestamp under the list item
+        li.appendChild(timestamp);
 
         list.appendChild(li);
     });
